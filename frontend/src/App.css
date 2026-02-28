@@ -1,0 +1,185 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #fdf6f9;
+  scroll-behavior: smooth;
+}
+
+.main-content {
+  min-height: 80vh;
+  padding: 40px;
+}
+
+.section {
+  padding: 80px 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #ff6f91;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #ff3d6e;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff6f91;
+  border-radius: 10px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #ff4f81;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Optional active effect */
+.nav-link:focus,
+.nav-link:active {
+  font-weight: 600;
+}
+.cart-bounce {
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.view-btn {
+  margin-top: 12px;
+  padding: 10px 22px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(90deg, #ff4f81, #ff7aa8);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.view-btn:hover {
+  transform: translateY(-4px);
+}
+
+
+
+.hero-section {
+  position: relative;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* First sliding layer */
+.hero-section::before,
+.hero-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  animation: slide 40s linear infinite;
+  z-index: -1;
+}
+
+/* First image strip */
+.hero-section::before {
+  background-image: 
+    url('/images/bg1.jpg'),
+    url('/images/bg2.jpg'),
+    url('/images/bg3.jpg'),
+    url('/images/bg4.jpg');
+
+  background-repeat: no-repeat;
+
+  /* smaller width = gap */
+  background-size: 20% 85%;
+
+  background-position: 
+    0% 50%, 
+    25% 50%, 
+    50% 50%, 
+    75% 50%;
+}
+
+/* Duplicate strip */
+.hero-section::after {
+  background-image: 
+    url('/images/bg1.jpg'),
+    url('/images/bg2.jpg'),
+    url('/images/bg3.jpg'),
+    url('/images/bg4.jpg');
+
+  background-repeat: no-repeat;
+  background-size: 20% 85%;
+
+  background-position: 
+    100% 50%, 
+    125% 50%, 
+    150% 50%, 
+    175% 50%;
+}
+
+/* Continuous sliding */
+@keyframes slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
