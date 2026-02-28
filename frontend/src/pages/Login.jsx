@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
 
 function Login() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [loginMethod, setLoginMethod] = useState("email");
 
@@ -9,7 +13,12 @@ function Login() {
   };
 
   return (
+
+    
     <div style={wrapperStyle}>
+      <button style={backButton} onClick={() => navigate(-1)}>
+      ←
+    </button>
       <div style={cardStyle}>
 
         {/* Sign In / Sign Up Toggle */}
@@ -103,6 +112,7 @@ function Login() {
 
 const wrapperStyle = {
   minHeight: "90vh",
+  position: "relative",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -197,5 +207,17 @@ const linkStyle = {
   fontWeight: "bold",
   cursor: "pointer"
 };
+
+const backButton = {
+  position: "absolute",
+  top: "20px",
+  left: "20px",
+  background: "none",
+  border: "none",
+  fontSize: "22px",
+  cursor: "pointer",
+  color: "#fff"
+};
+
 
 export default Login;

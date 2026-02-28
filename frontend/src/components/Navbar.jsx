@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { WishlistContext } from "../context/WishlistContext";
 
 function Navbar() {
     const { cartItems } = useContext(CartContext);
+    const { wishlist } = useContext(WishlistContext);
 
     return (
         <nav style={navStyle}>
             <div style={navLeft}>
-                <h2 style={logo}>Crochet Store</h2>
+                <h2 style={logo}>Crochet Store 🧶</h2>
 
                 <div style={navLinks}>
                     <a href="#products" className="nav-link">Search</a>
@@ -17,16 +19,29 @@ function Navbar() {
                 </div>
             </div>
 
-            {/* CART WITH BADGE */}
-            <Link to="/cart" style={cartWrapper}>
-                <span className="cart-bounce">🛒</span>
+            {/* RIGHT SIDE ICONS (Wishlist + Cart) */}
+            <div style={rightIcons}>
 
-                {cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0) > 0 && (
-                    <span style={cartBadge}>
-                        {cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0)}
-                    </span>
-                )}
-            </Link>
+                {/* WISHLIST ICON */}
+                <Link to="/wishlist" style={wishlistIcon}>
+                    {wishlist.length > 0 ? "❤️" : "🤍"}
+
+                    {wishlist.length > 0 && (
+                        <span style={cartBadge}>{wishlist.length}</span>
+                    )}
+                </Link>
+
+                {/* CART WITH BADGE */}
+                <Link to="/cart" style={cartWrapper}>
+                    <span className="cart-bounce">🛒</span>
+
+                    {cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0) > 0 && (
+                        <span style={cartBadge}>
+                            {cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0)}
+                        </span>
+                    )}
+                </Link>
+            </div>
         </nav>
     );
 }
@@ -61,12 +76,17 @@ const navLinks = {
     gap: "20px"
 };
 
-const cartIcon = {
+const rightIcons = {
+    display: "flex",
+    alignItems: "center",
+    gap: "20px"
+};
+
+const wishlistIcon = {
+    position: "relative",
     fontSize: "24px",
     textDecoration: "none",
-    padding: "6px",
-    borderRadius: "50%",
-    background: "#f5f5f5"
+    cursor: "pointer"
 };
 
 const cartWrapper = {

@@ -2,8 +2,10 @@ import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import CartItem from "../components/CartItem";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
+    const navigate = useNavigate();
     const { cartItems, removeItem, clearCart, updateQuantity } = useContext(CartContext);
 
     const totalPrice = cartItems.reduce(
@@ -13,6 +15,12 @@ function Cart() {
 
     return (
         <div className="section">
+            <button
+                className="btn back-btn"
+                onClick={() => navigate("/#products")}
+            >
+                ← 
+            </button>
             <h2>Your Cart 🛒</h2>
 
             {cartItems.length === 0 ? (
@@ -174,6 +182,14 @@ const checkoutBtn = {
     background: "#28a745",
     color: "white",
     textDecoration: "none"
+};
+const backButton = {
+    background: "none",
+    border: "none",
+    fontSize: "20px",
+    cursor: "pointer",
+    marginBottom: "15px",
+    color: "#000"
 };
 
 export default Cart;

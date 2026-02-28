@@ -1,10 +1,24 @@
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { WishlistContext } from "../context/WishlistContext";
 
 function ProductCard({ product }) {
     const navigate = useNavigate();
+    const { wishlist, addToWishlist, removeFromWishlist } = useContext(WishlistContext);
+
+    const isWishlisted = wishlist.some((item) => item.id === product.id);
+
+    const toggleWishlist = () => {
+        isWishlisted ? removeFromWishlist(product.id) : addToWishlist(product);
+    };
 
     return (
         <div style={cardStyle}>
+
+            {/* Wishlist Heart */}
+            <button onClick={toggleWishlist} style={wishlistBtn}>
+                {isWishlisted ? "❤️" : "🤍"}
+            </button>
 
             <img
                 src={product.image}
@@ -14,13 +28,13 @@ function ProductCard({ product }) {
 
             <h3>{product.name}</h3>
             <p style={{ fontWeight: "600" }}>₹{product.price}</p>
+
             <button
                 className="view-btn"
                 onClick={() => navigate(`/product/${product.id}`)}
             >
                 View Details
             </button>
-
 
         </div>
     );
@@ -34,7 +48,8 @@ const cardStyle = {
     borderRadius: "15px",
     boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
     textAlign: "center",
-    transition: "0.3s ease"
+    transition: "0.3s ease",
+    position: "relative"
 };
 
 const imageStyle = {
@@ -45,26 +60,18 @@ const imageStyle = {
     marginBottom: "15px"
 };
 
-const buttonStyle = {
-    marginTop: "10px",
-    padding: "10px 20px",
-    borderRadius: "25px",
+const wishlistBtn = {
+    position: "absolute",
+    top: "12px",
+    right: "12px",
+    background: "white",
     border: "none",
-    backgroundColor: "#ff4f81",
-    color: "white",
-    cursor: "pointer"
+    borderRadius: "50%",
+    width: "32px",
+    height: "32px",
+    cursor: "pointer",
+    fontSize: "18px",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.15)"
 };
-
-
-
-
-const viewBtnHover = {
-    transform: "translateY(-3px)",
-    boxShadow: "0 8px 20px rgba(255, 79, 129, 0.5)",
-};
-
-
-
-
 
 export default ProductCard;

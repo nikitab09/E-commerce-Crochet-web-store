@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 function ProductDetails() {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { addToCart } = useContext(CartContext);
     const [quantity, setQuantity] = useState(1);
@@ -242,7 +244,13 @@ function ProductDetails() {
     };
 
     return (
+        <div style={{ position: "relative", padding: "20px" }}>
+         <button style={backButton} onClick={() => navigate(-1)}>
+            ←
+        </button>
+        
         <div style={containerStyle}>
+            
             <div style={cardStyle}>
 
                 {/* IMAGE CONTAINER WITH QUANTITY CORNER */}
@@ -279,10 +287,11 @@ function ProductDetails() {
 
                 {/* Add to Cart */}
                 <button style={addToCartBtn} onClick={handleAddToCart}>
-                    Add to Cart
+                    Buy Now
                 </button>
 
             </div>
+        </div>
         </div>
     );
 }
@@ -356,12 +365,22 @@ const addToCartBtn = {
 };
 
 const detailsBox = {
-  marginTop: "20px",
-  padding: "15px",
-  background: "#fdf6f9",
-  borderRadius: "12px",
-  textAlign: "left",
-  lineHeight: "1.6"
+    marginTop: "20px",
+    padding: "15px",
+    background: "#fdf6f9",
+    borderRadius: "12px",
+    textAlign: "left",
+    lineHeight: "1.6"
+};
+const backButton = {
+  position: "absolute",
+  top: "20px",
+  left: "20px",
+  background: "none",
+  border: "none",
+  fontSize: "22px",
+  cursor: "pointer",
+  color: "#000"
 };
 
 export default ProductDetails;

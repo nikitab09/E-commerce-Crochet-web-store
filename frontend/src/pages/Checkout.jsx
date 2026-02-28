@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 function Checkout() {
   const { cartItems, clearCart } = useContext(CartContext);
   const [paymentMethod, setPaymentMethod] = useState("");
+  const navigate = useNavigate();
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * (item.quantity || 1),
@@ -28,6 +30,11 @@ function Checkout() {
   return (
     <div className="section">
       <h2>Checkout 🛍️</h2>
+
+      {/* BACK BUTTON */}
+      <button className="btn back-btn" onClick={() => navigate("/cart")}>
+        ← Back to Cart
+      </button>
 
       {cartItems.length === 0 ? (
         <div className="card">
@@ -116,5 +123,7 @@ const paymentOption = {
   margin: "8px 0",
   cursor: "pointer"
 };
+
+
 
 export default Checkout;
