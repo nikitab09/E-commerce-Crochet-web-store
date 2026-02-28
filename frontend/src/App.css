@@ -20,6 +20,7 @@ body {
   padding: 20px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
   transition: 0.3s ease;
+  
 }
 
 .card:hover {
@@ -207,4 +208,21 @@ html {
 
 .wishlist-btn:hover {
   transform: scale(1.1);
+}
+
+.customize-btn {
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(90deg, #ff4f81, #ff7aa8);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255,79,129,0.25);
+}
+
+.customize-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(255,79,129,0.35);
 }

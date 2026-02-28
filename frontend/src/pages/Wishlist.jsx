@@ -1,8 +1,10 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { WishlistContext } from "../context/WishlistContext";
 import { CartContext } from "../context/CartContext";
 
 function Wishlist() {
+    const navigate = useNavigate();
     const { wishlist, removeFromWishlist } = useContext(WishlistContext);
     const { addToCart } = useContext(CartContext);
 
@@ -28,6 +30,7 @@ function Wishlist() {
                                     objectFit: "cover",
                                     borderRadius: "12px"
                                 }}
+                                onClick={() => navigate(`/product/${item.id}`)}
                             />
 
                             <h3 style={{ fontSize: "16px", marginTop: "10px" }}>{item.name}</h3>

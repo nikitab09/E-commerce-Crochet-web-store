@@ -109,9 +109,10 @@ function Cart() {
 
 const itemBox = {
     position: "relative",
-    padding: "15px",
-    marginBottom: "15px",
+    padding: "15px ",
+    marginBottom: "20px",
     textAlign: "left"
+    
 };
 
 const removeBtn = {
@@ -164,7 +165,7 @@ const qtyBtn = {
 };
 
 const totalBox = {
-    marginTop: "15px",
+    marginTop: "20px",
     padding: "15px",
     background: "#fdf6f9",
     borderRadius: "12px",

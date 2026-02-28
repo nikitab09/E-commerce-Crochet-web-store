@@ -1,7 +1,9 @@
 import ProductCard from "../components/ProductCard";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home({ search }) {
+    const navigate = useNavigate();
     const productRef = useRef(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [visibleCount, setVisibleCount] = useState(15);
@@ -86,7 +88,10 @@ function Home({ search }) {
                     <p style={customizeText}>
                         Choose your colors, size & design. We’ll craft it specially for you.
                     </p>
-                    <button style={customizeButton}>
+                    <button
+                        className="customize-btn"
+                        onClick={() => navigate("/customize")}
+                    >
                         Customize
                     </button>
                 </div>
@@ -239,16 +244,7 @@ const customizeText = {
     color: "#555"
 };
 
-const customizeButton = {
-    padding: "12px 30px",
-    borderRadius: "25px",
-    border: "none",
-    background: "linear-gradient(90deg, #ff4f81, #ff7aa8)",
-    color: "white",
-    fontWeight: "600",
-    cursor: "pointer",
-    transition: "transform 0.3s ease"
-};
+
 
 const viewMoreButton = {
     padding: "12px 30px",
