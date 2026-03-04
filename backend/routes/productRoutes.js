@@ -11,6 +11,6 @@ const router = express.Router();
 
 router.get("/", getProducts);
 router.get("/:id", getProductById);
-router.post("/", protect, admin, createProduct);
+router.post("/", createProduct);
 
 module.exports = router;

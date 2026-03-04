@@ -1,6 +1,10 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,14 +18,28 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Register Data:", formData);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Later connect to backend API here
-    // Example:
-    // await API.post("/users/register", formData);
-  };
+  try {
+    const { data } = await axios.post(
+      "http://localhost:5050/api/users/register",
+      formData
+    );
+
+    console.log("User registered:", data);
+
+    // Save user to localStorage
+    localStorage.setItem("user", JSON.stringify(data));
+
+    alert("Registration successful 🎉");
+
+    navigate("/"); // go to home page
+  } catch (error) {
+    console.log(error.response?.data);
+    alert(error.response?.data?.message || "Something went wrong");
+  }
+};
 
   return (
     <div style={wrapperStyle}>

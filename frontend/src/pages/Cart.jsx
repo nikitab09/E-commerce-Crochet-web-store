@@ -109,10 +109,12 @@ function Cart() {
 
 const itemBox = {
     position: "relative",
-    padding: "15px ",
-    marginBottom: "20px",
-    textAlign: "left"
-    
+    padding: "20px",
+    marginBottom: "25px",
+    textAlign: "left",
+    maxWidth: "500px",
+    marginLeft: "0"
+
 };
 
 const removeBtn = {
@@ -169,14 +171,18 @@ const totalBox = {
     padding: "15px",
     background: "#fdf6f9",
     borderRadius: "12px",
-    textAlign: "center"
+    textAlign: "center",
+    maxWidth: "500px",
+    marginLeft: "0"
 };
 
 const actions = {
     marginTop: "15px",
     display: "flex",
-    justifyContent: "center",
-    gap: "15px"
+    justifyContent: "flex-start",
+    gap: "15px",
+    maxWidth: "500px",
+    marginLeft: "0"
 };
 
 const checkoutBtn = {

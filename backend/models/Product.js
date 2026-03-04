@@ -6,6 +6,13 @@ const productSchema = mongoose.Schema({
   description: { type: String },
   image: { type: String },
   stock: { type: Number, default: 0 },
+
+  
+  length: { type: String },
+  width: { type: String },
+  fabric: { type: String },
+  wash: { type: String },
+
   reviews: [
     {
       user: String,

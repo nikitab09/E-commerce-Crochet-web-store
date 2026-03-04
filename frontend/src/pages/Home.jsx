@@ -1,39 +1,29 @@
 import ProductCard from "../components/ProductCard";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import API from "../services/api";
 
 function Home({ search }) {
     const navigate = useNavigate();
     const productRef = useRef(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [visibleCount, setVisibleCount] = useState(15);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        API.get("/products")
+            .then(res => {
+                setProducts(res.data);
+            })
+            .catch(err => {
+                console.log("Error fetching products:", err);
+            });
+    }, []);
 
     const scrollToProducts = () => {
         productRef.current.scrollIntoView({ behavior: "smooth" });
     };
 
-    const products = [
-        { id: 1, name: "Lavender Bloom Tote", price: 1299, image: "/images/lavender-bloom-tote.jpg" },
-        { id: 2, name: "Daisy Whisper Bucket Hat", price: 899, image: "/images/daisy-whisper-bucket-hat.jpg" },
-        { id: 3, name: "Sunset Waves Cardigan", price: 2499, image: "/images/sunset-waves-cardigan.jpg" },
-        { id: 4, name: "Moonlight Granny Square Blanket", price: 3999, image: "/images/moonlight-granny-blanket.jpg" },
-        { id: 5, name: "Buttercream Crop Top", price: 1499, image: "/images/buttercream-crop-top.jpg" },
-        { id: 6, name: "Rosé Petal Scrunchie", price: 299, image: "/images/rose-petal-scrunchie.jpg" },
-        { id: 7, name: "Ocean Breeze Market Bag", price: 1199, image: "/images/ocean-breeze-market-bag.jpg" },
-        { id: 8, name: "Cinnamon Twist Headband", price: 399, image: "/images/cinnamon-twist-headband.jpg" },
-        { id: 9, name: "Blush Blossom Coaster Set", price: 699, image: "/images/blush-blossom-coaster-set.jpg" },
-        { id: 10, name: "Ivory Charm Phone Pouch", price: 799, image: "/images/ivory-charm-phone-pouch.jpg" },
-        { id: 11, name: "Aurora Handmade Shawl", price: 1999, image: "/images/aurora-handmade-shawl.jpg" },
-        { id: 12, name: "Vintage Rose Crochet Dress", price: 3499, image: "/images/vintage-rose-crochet-dress.jpg" },
-        { id: 13, name: "Cloud Knit Baby Booties", price: 599, image: "/images/cloud-knit-baby-booties.jpg" },
-        { id: 14, name: "Meadow Bloom Table Runner", price: 1599, image: "/images/meadow-bloom-table-runner.jpg" },
-        { id: 15, name: "Golden Hour Wrap Shrug", price: 1899, image: "/images/golden-hour-wrap-shrug.jpg" },
-        { id: 16, name: "Sapphire Stitch Sling Bag", price: 1399, image: "/images/sapphire-stitch-sling-bag.jpg" },
-        { id: 17, name: "Rustic Heart Wall Hanging", price: 999, image: "/images/rustic-heart-wall-hanging.jpg" },
-        { id: 18, name: "Pearl Knot Cushion Cover", price: 1299, image: "/images/pearl-knot-cushion-cover.jpg" },
-        { id: 19, name: "Midnight Mesh Summer Top", price: 1699, image: "/images/midnight-mesh-summer-top.jpg" },
-        { id: 20, name: "Wildflower Crochet Scarf", price: 899, image: "/images/wildflower-crochet-scarf.jpg" }
-    ];
 
     const filteredProducts = products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -113,7 +103,7 @@ function Home({ search }) {
                         filteredProducts
                             .slice(0, visibleCount)
                             .map((product) => (
-                                <ProductCard key={product.id} product={product} />
+                                <ProductCard key={product._id} product={product} />
                             ))
                     ) : (
                         <p>No products found 😔</p>

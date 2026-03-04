@@ -6,10 +6,13 @@ function ProductCard({ product }) {
     const navigate = useNavigate();
     const { wishlist, addToWishlist, removeFromWishlist } = useContext(WishlistContext);
 
-    const isWishlisted = wishlist.some((item) => item.id === product.id);
+    // ✅ Use _id instead of id
+    const isWishlisted = wishlist.some((item) => item._id === product._id);
 
     const toggleWishlist = () => {
-        isWishlisted ? removeFromWishlist(product.id) : addToWishlist(product);
+        isWishlisted
+            ? removeFromWishlist(product._id)
+            : addToWishlist(product);
     };
 
     return (
@@ -31,7 +34,7 @@ function ProductCard({ product }) {
 
             <button
                 className="view-btn"
-                onClick={() => navigate(`/product/${product.id}`)}
+                onClick={() => navigate(`/product/${product._id}`)}
             >
                 View Details
             </button>

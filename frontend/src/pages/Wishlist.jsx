@@ -19,7 +19,7 @@ function Wishlist() {
                     </div>
                 ) : (
                     wishlist.map((item) => (
-                        <div key={item.id} className="card" style={{ textAlign: "center" }}>
+                        <div key={item._id} className="card" style={{ textAlign: "center" }}>
 
                             <img
                                 src={item.image}
@@ -30,10 +30,12 @@ function Wishlist() {
                                     objectFit: "cover",
                                     borderRadius: "12px"
                                 }}
-                                onClick={() => navigate(`/product/${item.id}`)}
+                                onClick={() => navigate(`/product/${item._id}`)}
                             />
 
-                            <h3 style={{ fontSize: "16px", marginTop: "10px" }}>{item.name}</h3>
+                            <h3 style={{ fontSize: "16px", marginTop: "10px" }}>
+                                {item.name}
+                            </h3>
                             <p style={{ fontWeight: "600" }}>₹{item.price}</p>
 
                             <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
@@ -47,8 +49,12 @@ function Wishlist() {
 
                                 <button
                                     className="btn"
-                                    style={{ padding: "6px 12px", fontSize: "12px", background: "#ff4d6d" }}
-                                    onClick={() => removeFromWishlist(item.id)}
+                                    style={{
+                                        padding: "6px 12px",
+                                        fontSize: "12px",
+                                        background: "#ff4d6d"
+                                    }}
+                                    onClick={() => removeFromWishlist(item._id)}
                                 >
                                     Remove
                                 </button>
@@ -60,8 +66,6 @@ function Wishlist() {
         </div>
     );
 }
-
-/* ---- GRID STYLE (same as home) ---- */
 
 const productSection = {
     padding: "80px 60px",

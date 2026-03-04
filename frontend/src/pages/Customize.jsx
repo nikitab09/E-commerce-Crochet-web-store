@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 function Customize() {
     const navigate = useNavigate();
+    const { addToCart } = useContext(CartContext);
     const [file, setFile] = useState(null);
     const [showAll, setShowAll] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -22,10 +24,29 @@ function Customize() {
     ];
 
     const handleFile = (e) => {
-        setFile(e.target.files[0]);
+        const uploaded = e.target.files[0];
+        setFile(uploaded);
+
+        if (uploaded) {
+            const reader = new FileReader();
+            reader.onload = () => setPreview(reader.result); // base64 image
+            reader.readAsDataURL(uploaded);
+        }
     };
 
     const handleAddToCart = () => {
+        const imageToUse = selectedImage || preview || "/images/default-custom.jpg";
+
+        const item = {
+            id: Date.now(),
+            name: "Customized Crochet Item",
+            price: 0,
+            image: imageToUse,
+            quantity: 1,
+            isCustom: true
+        };
+
+        addToCart(item);
         alert("Customization added to cart!");
     };
 
@@ -66,10 +87,18 @@ function Customize() {
                                     src={img}
                                     style={imgStyle}
                                     onClick={() => setPreview(img)}
+
                                 />
 
                                 {isSelected && (
-                                    <span style={selectedBadge}>✔</span>
+                                    <span
+                                        style={{ ...selectedBadge, cursor: "pointer" }}
+                                        onClick={() =>
+                                            setSelectedImage(selectedImage === img ? null : img)
+                                        }
+                                    >
+                                        ✔
+                                    </span>
                                 )}
 
                                 <button
@@ -107,9 +136,11 @@ function Customize() {
             </div>
 
             {/* Add to Cart */}
-            <button style={addBtn} onClick={handleAddToCart}>
-                Add to Cart 🛒
-            </button>
+            {(preview || selectedImage) && (
+                <button style={addBtn} onClick={handleAddToCart}>
+                    Add to Cart 🛒
+                </button>
+            )}
             {preview && (
                 <div style={previewOverlay} onClick={() => setPreview(null)}>
                     <div style={previewBox}>
@@ -218,28 +249,28 @@ const selectedBadge = {
     borderRadius: "10px"
 };
 const previewOverlay = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  background: "rgba(0,0,0,0.6)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  zIndex: 999
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "rgba(0,0,0,0.6)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 999
 };
 
 const previewBox = {
-  background: "#fff",
-  padding: "15px",
-  borderRadius: "12px",
-  textAlign: "center"
+    background: "#fff",
+    padding: "15px",
+    borderRadius: "12px",
+    textAlign: "center"
 };
 
 const previewImg = {
-  maxWidth: "400px",
-  maxHeight: "400px",
-  borderRadius: "10px"
+    maxWidth: "400px",
+    maxHeight: "400px",
+    borderRadius: "10px"
 };
 export default Customize;

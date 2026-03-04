@@ -1,5 +1,7 @@
 import { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 
@@ -7,6 +9,56 @@ function Login() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [loginMethod, setLoginMethod] = useState("email");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      navigate("/");
+    }
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (isLogin) {
+        // LOGIN
+        const { data } = await axios.post(
+          "http://localhost:5050/api/users/login",
+          {
+            email: loginMethod === "email" ? email : phone,
+            password,
+          }
+        );
+
+        localStorage.setItem("user", JSON.stringify(data));
+        alert("Login successful 🎉");
+        navigate("/");
+
+      } else {
+        // REGISTER
+        const { data } = await axios.post(
+          "http://localhost:5050/api/users/register",
+          {
+            name,
+            email,
+            password,
+          }
+        );
+
+        localStorage.setItem("user", JSON.stringify(data));
+        alert("Account created 🎉");
+        navigate("/");
+      }
+
+    } catch (error) {
+      alert(error.response?.data?.message || "Something went wrong");
+    }
+  };
 
   const toggleMode = () => {
     setIsLogin(!isLogin);
@@ -14,11 +66,11 @@ function Login() {
 
   return (
 
-    
+
     <div style={wrapperStyle}>
       <button style={backButton} onClick={() => navigate(-1)}>
-      ←
-    </button>
+        ←
+      </button>
       <div style={cardStyle}>
 
         {/* Sign In / Sign Up Toggle */}
@@ -59,7 +111,7 @@ function Login() {
           </div>
         )}
 
-        <form>
+        <form onSubmit={handleSubmit}>
 
           {/* Name only for Sign Up */}
           {!isLogin && (
@@ -67,6 +119,8 @@ function Login() {
               type="text"
               placeholder="Full Name"
               style={inputStyle}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           )}
 
@@ -76,12 +130,16 @@ function Login() {
               type="email"
               placeholder="Email Address"
               style={inputStyle}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           ) : (
             <input
               type="tel"
               placeholder="Phone Number"
               style={inputStyle}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           )}
 
@@ -89,6 +147,8 @@ function Login() {
             type="password"
             placeholder="Password"
             style={inputStyle}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <button type="submit" style={buttonStyle}>

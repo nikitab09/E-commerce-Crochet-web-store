@@ -15,12 +15,13 @@ app.use(express.json());
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/api/wishlist", require("./routes/wishlistRoutes"));
 
 app.get("/", (req, res) => {
   res.send("API is running 🚀");
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5050;
 
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT} 🚀`)
