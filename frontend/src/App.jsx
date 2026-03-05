@@ -11,6 +11,7 @@ import Checkout from "./pages/Checkout";
 import AdminDashboard from "./pages/AdminDashboard";
 import Wishlist from "./pages/Wishlist";
 import Customize from "./pages/Customize";
+import MyOrders from "./pages/MyOrders";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/customize" element={<Customize />} />
+          <Route path="/my-orders" element={<MyOrders />} />
           
         </Routes>
       </div>
