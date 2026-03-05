@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 
-function AdminDashboard() {
-
+function MyOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-
         const user = JSON.parse(localStorage.getItem("user"));
 
-        const res = await API.get("/orders", {
+        const res = await API.get("/orders/myorders", {
           headers: {
             Authorization: `Bearer ${user?.token}`
           }
         });
 
         setOrders(res.data);
-
       } catch (err) {
         console.log(err);
       }
@@ -29,52 +26,21 @@ function AdminDashboard() {
 
   return (
     <div className="section">
-      <h2>Admin Dashboard</h2>
+      <h2>My Orders 📦</h2>
 
       {orders.length === 0 ? (
         <p>No orders yet</p>
       ) : (
         orders.map(order => (
           <div key={order._id} className="card">
-
-            <p><b>Customer:</b> {order.user?.name}</p>
-
             <p><b>Total:</b> ₹{order.totalPrice}</p>
-
             <p><b>Payment:</b> {order.paymentMethod}</p>
-
             <p><b>Status:</b> {order.orderStatus}</p>
-
           </div>
         ))
       )}
-
     </div>
   );
 }
 
-const orderGrid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(300px,1fr))",
-  gap: "20px",
-  marginTop: "30px"
-};
-
-const orderCard = {
-  background: "white",
-  padding: "20px",
-  borderRadius: "15px",
-  boxShadow: "0 5px 15px rgba(0,0,0,0.08)"
-};
-
-const statusBtn = {
-  padding: "8px 12px",
-  marginRight: "10px",
-  border: "none",
-  borderRadius: "8px",
-  background: "#ff6f91",
-  color: "white",
-  cursor: "pointer"
-};
-
-export default AdminDashboard;
+export default MyOrders;

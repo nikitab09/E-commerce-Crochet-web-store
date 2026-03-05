@@ -16,6 +16,9 @@ function Navbar() {
                     <a href="#products" className="nav-link">Search</a>
                     <Link to="/" className="nav-link">Home</Link>
                     <Link to="/login" className="nav-link">Signin / Signup</Link>
+                    <Link to="/my-orders" className="nav-link">
+                        My Orders
+                    </Link>
                 </div>
             </div>
 

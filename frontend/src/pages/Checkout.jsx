@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import API from "../services/api";
 
 function Checkout() {
   const { cartItems, clearCart } = useContext(CartContext);
@@ -12,6 +13,20 @@ function Checkout() {
     (total, item) => total + item.price * (item.quantity || 1),
     0
   );
+  const [address, setAddress] = useState({
+    name: "",
+    phone: "",
+    street: "",
+    city: "",
+    state: "",
+    pincode: ""
+  });
+  const handleAddressChange = (e) => {
+    setAddress({
+      ...address,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handlePayNow = () => {
     if (!paymentMethod) {
@@ -23,25 +38,40 @@ function Checkout() {
 
   const handleOrder = async () => {
     try {
-      await fetch("http://localhost:5050/api/orders", {
+      if (!address.name || !address.phone || !address.street) {
+        alert("Please enter delivery address 🚚");
+        return;
+      }
+
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const res = await fetch("http://localhost:5050/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+          "Authorization": `Bearer ${user?.token}`
         },
         body: JSON.stringify({
           items: cartItems,
           totalPrice,
-          paymentMethod
+          paymentMethod,
+          address
         })
       });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Order failed");
+      }
 
       alert("Order placed successfully! 🎉");
       clearCart();
       navigate("/");
+
     } catch (err) {
       console.log(err);
-      alert("Order failed!");
+      alert(err.message || "Order failed!");
     }
   };
 
@@ -69,6 +99,53 @@ function Checkout() {
 
           <hr />
           <h3>Total: ₹{totalPrice}</h3>
+
+          {/* DELIVERY ADDRESS */}
+          <div style={addressBox}>
+            <h4>Delivery Address 🚚</h4>
+
+            <input
+              name="name"
+              placeholder="Full Name"
+              style={addressInput}
+              onChange={handleAddressChange}
+            />
+
+            <input
+              name="phone"
+              placeholder="Phone Number"
+              style={addressInput}
+              onChange={handleAddressChange}
+            />
+
+            <input
+              name="street"
+              placeholder="Street Address"
+              style={addressInput}
+              onChange={handleAddressChange}
+            />
+
+            <input
+              name="city"
+              placeholder="City"
+              style={addressInput}
+              onChange={handleAddressChange}
+            />
+
+            <input
+              name="state"
+              placeholder="State"
+              style={addressInput}
+              onChange={handleAddressChange}
+            />
+
+            <input
+              name="pincode"
+              placeholder="Pincode"
+              style={addressInput}
+              onChange={handleAddressChange}
+            />
+          </div>
 
           {/* PAYMENT OPTIONS */}
           <div style={paymentBox}>
@@ -246,6 +323,21 @@ const cardBox = {
 };
 
 const cardInput = {
+  width: "95%",
+  padding: "10px",
+  borderRadius: "8px",
+  border: "1px solid #ddd",
+  marginTop: "8px"
+};
+const addressBox = {
+  marginTop: "20px",
+  padding: "15px",
+  background: "#fdf6f9",
+  borderRadius: "12px",
+  textAlign: "left"
+};
+
+const addressInput = {
   width: "95%",
   padding: "10px",
   borderRadius: "8px",
