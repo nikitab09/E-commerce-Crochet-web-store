@@ -6,6 +6,7 @@ import { WishlistContext } from "../context/WishlistContext";
 function Navbar() {
     const { cartItems } = useContext(CartContext);
     const { wishlist } = useContext(WishlistContext);
+    const user = JSON.parse(localStorage.getItem("user"));
 
     return (
         <nav style={navStyle}>
@@ -16,9 +17,11 @@ function Navbar() {
                     <a href="#products" className="nav-link">Search</a>
                     <Link to="/" className="nav-link">Home</Link>
                     <Link to="/login" className="nav-link">Signin / Signup</Link>
-                    <Link to="/my-orders" className="nav-link">
-                        My Orders
-                    </Link>
+                    {user && (
+    <Link to="/my-orders" className="nav-link">
+        My Orders
+    </Link>
+)}
                 </div>
             </div>
 
