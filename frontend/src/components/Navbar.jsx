@@ -1,12 +1,21 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 
 function Navbar() {
+
     const { cartItems } = useContext(CartContext);
     const { wishlist } = useContext(WishlistContext);
+
+    const navigate = useNavigate(); // ✅ FIX
     const user = JSON.parse(localStorage.getItem("user"));
+    const [showMenu, setShowMenu] = useState(false);
+
+    const logout = () => {
+        localStorage.removeItem("user");
+        navigate("/login");
+    };
 
     return (
         <nav style={navStyle}>
@@ -16,19 +25,49 @@ function Navbar() {
                 <div style={navLinks}>
                     <a href="#products" className="nav-link">Search</a>
                     <Link to="/" className="nav-link">Home</Link>
-                    <Link to="/login" className="nav-link">Signin / Signup</Link>
-                    {user && (
-    <Link to="/my-orders" className="nav-link">
-        My Orders
-    </Link>
-)}
+
+                    {!user ? (
+                        <Link to="/login" className="nav-link">
+                            Signin / Signup
+                        </Link>
+                    ) : (
+                        <div style={accountWrapper}>
+
+                            <button
+                                onClick={() => setShowMenu(!showMenu)}
+                                style={accountBtn}
+                            >
+                                👤 My Account
+                            </button>
+
+                            {showMenu && (
+                                <div style={dropdownMenu}>
+
+                                    <div style={accountHeader}>
+                                        <strong>{user.name}</strong>
+                                        <p style={{ fontSize: "12px" }}>{user.email}</p>
+                                    </div>
+
+                                    <Link to="/profile" style={menuItem}>
+                                        👤 My Profile
+                                    </Link>
+
+                                    <Link to="/my-orders" style={menuItem}>
+                                        📦 My Orders
+                                    </Link>
+
+                                </div>
+                            )}
+
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {/* RIGHT SIDE ICONS (Wishlist + Cart) */}
+            {/* RIGHT SIDE ICONS */}
             <div style={rightIcons}>
 
-                {/* WISHLIST ICON */}
+                {/* WISHLIST */}
                 <Link to="/wishlist" style={wishlistIcon}>
                     {wishlist.length > 0 ? "❤️" : "🤍"}
 
@@ -37,7 +76,7 @@ function Navbar() {
                     )}
                 </Link>
 
-                {/* CART WITH BADGE */}
+                {/* CART */}
                 <Link to="/cart" style={cartWrapper}>
                     <span className="cart-bounce">🛒</span>
 
@@ -47,6 +86,14 @@ function Navbar() {
                         </span>
                     )}
                 </Link>
+
+                {/* LOGOUT BUTTON */}
+                {user && (
+                    <button onClick={logout} style={logoutBtn}>
+                        Logout
+                    </button>
+                )}
+
             </div>
         </nav>
     );
@@ -112,5 +159,53 @@ const cartBadge = {
     padding: "2px 6px",
     fontWeight: "600"
 };
+const logoutBtn = {
+    padding: "6px 12px",
+    border: "none",
+    background: "#ff4f81",
+    color: "white",
+    borderRadius: "6px",
+    cursor: "pointer"
+};
+const accountWrapper = {
+    position: "relative"
+};
 
+const accountBtn = {
+    background: "none",
+    border: "none",
+    fontWeight: "600",
+    cursor: "pointer"
+};
+
+const dropdownMenu = {
+    position: "absolute",
+    top: "35px",
+    right: 0,
+    background: "#fff",
+    width: "200px",
+    borderRadius: "10px",
+    boxShadow: "0 5px 20px rgba(0,0,0,0.15)",
+    padding: "10px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    zIndex: 100
+};
+
+const accountHeader = {
+    borderBottom: "1px solid #eee",
+    paddingBottom: "8px",
+    marginBottom: "5px"
+};
+
+const menuItem = {
+    padding: "8px",
+    textDecoration: "none",
+    color: "#333",
+    border: "none",
+    background: "none",
+    textAlign: "left",
+    cursor: "pointer"
+};
 export default Navbar;

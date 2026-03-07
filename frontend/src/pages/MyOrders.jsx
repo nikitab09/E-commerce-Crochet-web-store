@@ -31,6 +31,29 @@ function MyOrders() {
         fetchOrders();
 
     }, []);
+    const cancelOrder = async (id) => {
+        try {
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+
+            await API.put(`/orders/cancel/${id}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
+            });
+
+            alert("Order cancelled successfully");
+
+            // refresh orders
+            setOrders(prev =>
+                prev.map(o =>
+                    o._id === id ? { ...o, orderStatus: "Cancelled" } : o
+                )
+            );
+
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
         <div className="section">
@@ -90,6 +113,48 @@ function MyOrders() {
                         <p><b>Payment:</b> {order.paymentMethod}</p>
                         <p><b>Status:</b> {order.orderStatus}</p>
 
+                        {/* TRACKING MESSAGE */}
+                        {order.orderStatus === "Processing" && <p>📦 Your order is being prepared</p>}
+                        {order.orderStatus === "Shipped" && <p>🚚 Your order has been shipped</p>}
+                        {order.orderStatus === "Delivered" && <p>✅ Your order has been delivered</p>}
+                        {order.orderStatus === "Cancelled" && <p>❌ This order was cancelled</p>}
+
+                        {/* BUTTONS */}
+                        <div style={{ marginTop: "10px" }}>
+
+                            {order.orderStatus !== "Cancelled" && order.orderStatus !== "Delivered" && (
+                                <button
+                                    onClick={() => cancelOrder(order._id)}
+                                    style={{
+                                        background: "#ff4d4d",
+                                        color: "white",
+                                        border: "none",
+                                        padding: "8px 14px",
+                                        borderRadius: "5px",
+                                        cursor: "pointer",
+                                        marginRight: "10px"
+                                    }}
+                                >
+                                    Cancel Order
+                                </button>
+                            )}
+
+                            <button
+                                onClick={() => alert(`Order Status: ${order.orderStatus}`)}
+                                style={{
+                                    background: "#4CAF50",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "8px 14px",
+                                    borderRadius: "5px",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Track Order
+                            </button>
+
+                        </div>
+
                     </div>
 
                 ))
@@ -98,6 +163,7 @@ function MyOrders() {
 
         </div>
     );
+
 }
 
 export default MyOrders;

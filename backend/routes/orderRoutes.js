@@ -1,5 +1,5 @@
 const express = require("express");
-const { createOrder, getAllOrders, updateOrderStatus, getMyOrders } = require("../controllers/orderController");
+const { createOrder, getAllOrders, updateOrderStatus, getMyOrders, cancelOrder } = require("../controllers/orderController");
 const { protect, admin } = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -12,5 +12,6 @@ router.get("/myorders", protect, getMyOrders);
 // ADMIN ROUTES
 router.get("/", protect, admin, getAllOrders);
 router.put("/:id", protect, admin, updateOrderStatus);
+router.put("/cancel/:id", protect, cancelOrder);
 
 module.exports = router;

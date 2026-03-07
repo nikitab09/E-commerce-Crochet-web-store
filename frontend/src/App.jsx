@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Wishlist from "./pages/Wishlist";
 import Customize from "./pages/Customize";
 import MyOrders from "./pages/MyOrders";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/customize" element={<Customize />} />
           <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/profile" element={<Profile />} />
           
         </Routes>
       </div>

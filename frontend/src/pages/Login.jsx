@@ -8,18 +8,18 @@ import { useEffect } from "react";
 function Login() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
-  const [loginMethod, setLoginMethod] = useState("email");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    if (user && window.location.pathname === "/login") {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ function Login() {
         const { data } = await axios.post(
           "http://localhost:5050/api/users/login",
           {
-            email: loginMethod === "email" ? email : phone,
+            email: email.trim().toLowerCase(),
             password,
           }
         );
@@ -45,7 +45,7 @@ function Login() {
           "http://localhost:5050/api/users/register",
           {
             name,
-            email,
+            email: email.trim().toLowerCase(),
             password,
           }
         );
@@ -94,22 +94,7 @@ function Login() {
         </h2>
 
         {/* Login Method Switch (Only for Sign In) */}
-        {isLogin && (
-          <div style={methodContainer}>
-            <button
-              style={loginMethod === "email" ? activeMethod : methodStyle}
-              onClick={() => setLoginMethod("email")}
-            >
-              Email
-            </button>
-            <button
-              style={loginMethod === "phone" ? activeMethod : methodStyle}
-              onClick={() => setLoginMethod("phone")}
-            >
-              Phone
-            </button>
-          </div>
-        )}
+
 
         <form onSubmit={handleSubmit}>
 
@@ -125,23 +110,14 @@ function Login() {
           )}
 
           {/* Email OR Phone Input */}
-          {loginMethod === "email" ? (
-            <input
-              type="email"
-              placeholder="Email Address"
-              style={inputStyle}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          ) : (
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              style={inputStyle}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          )}
+          <input
+            type="email"
+            placeholder="Email Address"
+            style={inputStyle}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
           <input
             type="password"

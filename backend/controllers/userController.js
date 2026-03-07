@@ -11,16 +11,17 @@ const generateToken = (id) => {
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
-  const userExists = await User.findOne({ email });
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const userExists = await User.findOne({ email: normalizedEmail });
+
   if (userExists)
     return res.status(400).json({ message: "User already exists" });
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   const user = await User.create({
     name,
-    email,
-    password: hashedPassword
+    email: normalizedEmail,
+    password
   });
 
   res.json({
@@ -34,9 +35,11 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const normalizedEmail = email.trim().toLowerCase();
 
-  if (user && await bcrypt.compare(password, user.password)) {
+  const user = await User.findOne({ email: normalizedEmail });
+
+  if (user && await user.matchPassword(password)) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -47,5 +50,4 @@ const loginUser = async (req, res) => {
     res.status(401).json({ message: "Invalid credentials" });
   }
 };
-
 module.exports = { registerUser, loginUser };
