@@ -12,6 +12,17 @@ function Cart() {
         (total, item) => total + item.price * (item.quantity || 1),
         0
     );
+    const handleCheckout = () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (!user) {
+            alert("Please login or sign up to place an order");
+            navigate("/login");
+            return;
+        }
+
+        navigate("/checkout");
+    };
 
     return (
         <div className="section">
@@ -19,7 +30,7 @@ function Cart() {
                 className="btn back-btn"
                 onClick={() => navigate("/#products")}
             >
-                ← 
+                ←
             </button>
             <h2>Your Cart 🛒</h2>
 
@@ -95,9 +106,13 @@ function Cart() {
                             Clear Cart
                         </button>
 
-                        <Link to="/checkout" className="btn" style={checkoutBtn}>
+                        <button
+                            className="btn"
+                            style={checkoutBtn}
+                            onClick={handleCheckout}
+                        >
                             Proceed to Checkout
-                        </Link>
+                        </button>
                     </div>
                 </>
             )}

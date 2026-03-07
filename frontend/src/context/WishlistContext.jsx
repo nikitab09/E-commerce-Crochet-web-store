@@ -1,9 +1,16 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const WishlistContext = createContext();
 
 export const WishlistProvider = ({ children }) => {
-    const [wishlist, setWishlist] = useState([]);
+    const [wishlist, setWishlist] = useState(() => {
+        const savedWishlist = localStorage.getItem("wishlist");
+        return savedWishlist ? JSON.parse(savedWishlist) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    }, [wishlist]);
 
     const addToWishlist = (product) => {
         setWishlist((prev) => {

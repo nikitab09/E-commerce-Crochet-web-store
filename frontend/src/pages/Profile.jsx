@@ -1,19 +1,31 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Profile() {
 
     const navigate = useNavigate();
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+    let storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (storedUser && !storedUser.memberSince) {
-        storedUser.memberSince = new Date().toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long"
-        });
-        storedUser.accountType = "Customer";
-        localStorage.setItem("user", JSON.stringify(storedUser));
-    }
+    useEffect(() => {
+        if (!user) return;
+
+        const updatedUser = { ...user };
+
+        if (!updatedUser.accountType) {
+            updatedUser.accountType = "Customer";
+        }
+
+        if (!updatedUser.memberSince) {
+            updatedUser.memberSince = new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long"
+            });
+        }
+
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    }, []);
 
     const [user, setUser] = useState(storedUser);
     const [edit, setEdit] = useState(false);
@@ -100,22 +112,16 @@ function Profile() {
                 </div>
 
                 <p><b>Email:</b> {user.email}</p>
-                <p><b>Account Type: Customer</b> {user.accountType}</p>
-                <p><b>Member Since: March 2026</b> {user.memberSince}</p>
+                <p><b>Account Type:</b> {user.accountType}</p>
+                <p><b>Member Since:</b> {user.memberSince}</p>
 
 
 
                 <div style={{ marginTop: "20px" }}>
 
-                    <button
-                        style={button}
-                        onClick={() => navigate("/my-orders")}
-                    >
-                        📦 My Orders
-                    </button>
 
                     <button
-                        style={{ ...button, background: "#ff4d4d" }}
+                        style={{ ...button, background: "#ff4f81" }}
                         onClick={logout}
                     >
                         🚪 Logout
@@ -156,7 +162,7 @@ const avatar = {
     width: "90px",
     height: "90px",
     borderRadius: "50%",
-    background: "#4CAF50",
+    background: "#ff4f81",
     color: "white",
     fontSize: "35px",
     display: "flex",
@@ -213,16 +219,17 @@ const saveBtn = {
     cursor: "pointer",
     padding: "5px 8px"
 };
-
 const button = {
-    width: "100%",
+    width: "30%",
     padding: "10px",
     marginTop: "10px",
     border: "none",
-    borderRadius: "8px",
+    borderRadius: "9px",
     background: "#4CAF50",
     color: "white",
-    cursor: "pointer"
+    cursor: "pointer",
+    fontSize: "14px"
 };
+
 
 export default Profile;
