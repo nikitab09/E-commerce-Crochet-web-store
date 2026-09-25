@@ -208,12 +208,100 @@ const products = [
     wash: "Hand wash recommended",
     description: "Handmade scarf with floral crochet pattern."
   },
+  {
+  name: "Frog Coasters (Pack of 2)",
+  price: 199,
+  image: "/images/frog-coasters.jpg",
+  description: "Cute handmade crochet frog coasters, perfect for adding a playful touch to your table.",
+  length: "4 inches",
+  width: "4 inches",
+  fabric: "100% Cotton Yarn",
+  wash: "Hand wash with mild detergent"
+},
+
+{
+  name: "Mini Flower Keychain",
+  price: 199,
+  image: "/images/mini-flower-keychain.jpg",
+  description: "Cute handmade crochet mini flower keychain.",
+  length: "3 inches",
+  width: "2 inches",
+  fabric: "100% Cotton Yarn",
+  wash: "Spot clean gently"
+},
+
+{
+  name: "Mini Bear Keychain",
+  price: 199,
+  image: "/images/mini-bear-keychain.jpg",
+  description: "Adorable handmade crochet mini bear keychain.",
+  length: "3 inches",
+  width: "2 inches",
+  fabric: "100% Cotton Yarn",
+  wash: "Spot clean gently"
+},
+
+{
+  name: "Bow-Cherry Charm",
+  price: 249,
+  image: "/images/bow-cherry-charm.jpg",
+  description: "Cute handmade crochet bow and cherry charm for bags, keys, and accessories.",
+  length: "3 inches",
+  width: "2 inches",
+  fabric: "100% Cotton Yarn",
+  wash: "Spot clean gently"
+},
+
+{
+  name: "Mini Octopus Keychain",
+  price: 249,
+  image: "/images/mini-octopus-keychain.jpg",
+  description: "Adorable handmade crochet mini octopus keychain.",
+  length: "3 inches",
+  width: "3 inches",
+  fabric: "100% Cotton Yarn",
+  wash: "Spot clean gently"
+},
+
+{
+  name: "Flower Kissed Mirror",
+  price: 599,
+  image: "/images/flower-kissed-mirror.jpg",
+  description: "Beautiful handmade mirror decorated with delicate crochet flowers.",
+  length: "6 inches",
+  width: "6 inches",
+  fabric: "100% Cotton Yarn",
+  wash: "Wipe gently with a soft dry cloth"
+},
+
+{
+  name: "Flower Crochet Wall Decor",
+  price: 699,
+  image: "/images/flower-crochet-wall-decor.jpg",
+  description: "Handmade crochet flower wall decor to add a soft and cozy touch to your space.",
+  length: "10 inches",
+  width: "10 inches",
+  fabric: "100% Cotton Yarn",
+  wash: "Dust gently with a soft cloth"
+},
+
+{
+  name: "Square Wall Decor (Pack of 5)",
+  price: 999,
+  image: "/images/square-wall-decor-pack.jpg",
+  description: "Set of 5 handmade square crochet wall decorations for creating a beautiful wall display.",
+  length: "6 inches each",
+  width: "6 inches each",
+  fabric: "100% Cotton Yarn",
+  wash: "Dust gently with a soft cloth"
+},
+
 ];
 const importData = async () => {
   try {
     await Product.deleteMany();
     await Product.insertMany(products);
-    console.log("✅ All 20 Products Imported");
+    console.log(`✅ All ${products.length} Products Imported`);
     process.exit();
   } catch (error) {
     console.error(error);
